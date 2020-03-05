@@ -7,6 +7,8 @@ import (
 	"text/template"
 	"flag"
 	"sync"
+	"websocket/trace"
+	"os"
 )
 
 // templ represents a single template
@@ -28,6 +30,7 @@ func main() {
 	addr := flag.String("addr", ":8080", "Application address")
 	flag.Parse()
 	r := newRoom()
+	r.tracer = trace.New(os.Stdout)
 	http.Handle("/", &templateHandler{filename: "chat.html"})
 	http.Handle("/room", r)
 
