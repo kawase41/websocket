@@ -26,17 +26,21 @@ type room struct {
 
 	// tracer receives logs of actions performed in chat rooms.
 	tracer trace.Tracer
+
+	// avatar gets avatar information.
+	avatar Avatar
 }
 
 // newRoom makes a new room that is ready to
 // go.
-func newRoom() *room {
+func newRoom(avatar Avatar) *room {
 	return &room{
 		forward: make(chan *message),
 		join:    make(chan *client),
 		leave:   make(chan *client),
 		clients: make(map[*client]bool),
 		tracer:  trace.Off(),
+		avatar:  avatar,
 	}
 }
 
@@ -90,7 +94,7 @@ func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		log.Fatal("Failed to get auth cookie:", err)
 		return
 	}
-	
+
 	client := &client{
 		socket: socket,
 		send:     make(chan *message, messageBufferSize),
