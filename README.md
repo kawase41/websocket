@@ -17,9 +17,11 @@ Create a simple web server using the net/http package and allow multiple users t
 
 ## Usage
 
+```
 go build -o chat
 ./chat -host=":8080"
 http://localhost:8080/chat
+```
 
 ## Install
 
